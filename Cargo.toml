@@ -9,6 +9,10 @@ repository = "https://github.com/victor-software-house/langdex"
 keywords = ["language", "linguist", "extension", "syntax", "detection"]
 categories = ["text-processing", "development-tools"]
 
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cap-lints", "warn"]
+
 [lints.rust]
 # deny instead of forbid, because forbid refuses the item-level
 # #[expect(unsafe_code, reason = "...")] that a justified exception carries.
