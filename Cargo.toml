@@ -8,10 +8,17 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/victor-software-house/langdex"
 keywords = ["language", "linguist", "extension", "syntax", "detection"]
 categories = ["text-processing", "development-tools"]
+include = ["src/**", "README.md", "LICENSE-*", "Cargo.toml"]
 
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cap-lints", "warn"]
+
+[dev-dependencies]
+serde = { version = "1.0.229", features = ["derive"] }
+serde-saphyr = { package = "vsh-serde-saphyr", version = "=0.0.4", default-features = false, features = [
+  "deserialize",
+] }
 
 [lints.rust]
 # deny instead of forbid, because forbid refuses the item-level
