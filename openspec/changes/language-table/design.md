@@ -39,7 +39,8 @@ The generator test fails when an entry names a language that does not list the e
 
 ## 3. Table
 
-`src/table.rs` is generated, formatted with rustfmt, and starts with a comment that names the test that writes it.  
+`src/table.rs` is generated in one fixed layout, one entry per line, and starts with a comment that names the test that writes it.  
+`lib.rs` declares it as `#[rustfmt::skip] mod table;`, so rustfmt leaves the layout as the generator wrote it and the drift check compares plain text.  
 It holds `LANGUAGES`, a static array of `Language` in Linguist's order, and four indexes, each a static array sorted by its key bytes:
 
 - `NAMES: [(&str, usize); _]`: every name, `fs_name` and alias, lowercased with `str::to_lowercase`, to its language;
@@ -105,7 +106,7 @@ So `ts title="a.ts"` gives TypeScript and `title="a.ts"`, and `md` and `markdown
 ## 6. Generator and checks
 
 `tests/table.rs` reads `data/linguist/*.yml` and `data/local.yml` through `vsh-serde-saphyr` into typed structs that refuse unknown fields of `data/local.yml`, and builds the text of `src/table.rs`.  
-With `LANGDEX_GENERATE=1` it writes the file and runs rustfmt on it; without, it fails when the committed file differs, and prints the command that regenerates it.  
+With `LANGDEX_GENERATE=1` it writes the file; without, it fails when the committed file differs, and prints the command that regenerates it.  
 The mise task `generate` runs `LANGDEX_GENERATE=1 cargo test --test table`.  
 It also checks what the generator assumes: names, `fs_name`s and aliases are unique after lowercasing, every extension starts with a dot, and every entry of `data/local.yml` is needed.
 
