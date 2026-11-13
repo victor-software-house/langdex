@@ -3,7 +3,7 @@
 ## 1. Data
 
 `data/linguist/` holds `languages.yml` and `popular.yml` from Linguist tag `v9.7.0` (commit `e0c78d62c42abae6122235d8e68a7aa43eef89da`), byte for byte, and `SHA256SUMS` with their hashes.  
-`LICENSE-LINGUIST` at the root holds Linguist's MIT license, so the packed crate carries it beside the table derived from that data.  
+`LICENSE-LINGUIST` at the root holds Linguist's MIT license, so `cargo package` packs it beside the table derived from that data.  
 The mise task `linguist:fetch` downloads both files at the commit in `data/linguist/COMMIT` and checks them with `shasum -a 256 -c SHA256SUMS`.  
 Moving to a newer Linguist changes `COMMIT`, runs the fetch, rewrites `SHA256SUMS`, and regenerates the table, in one pull request.
 
@@ -98,7 +98,7 @@ The first key with a language wins, file name before extensions.
 4. A trailing `.` and digits are dropped, so `python3.11` reads `python3`.
 5. `osascript` with a later `-l` gives no interpreter.
 
-Linguist also reads an `exec` line in the first five lines of an `sh` script; `interpreter` reads one line, so it does not, and the rustdoc says so.
+Linguist also reads an `exec` line in the first five lines of an `sh` script; `interpreter` reads one line, so it does not, which the rustdoc of `interpreter` records.
 
 `by_fence` takes the info string of a fenced code block: the word is the text up to the first whitespace, and an empty word gives `None`.  
 So `ts title="a.ts"` gives TypeScript and `title="a.ts"`, and `md` and `markdown` both give Markdown.
