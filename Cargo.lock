@@ -78,7 +78,7 @@ dependencies = [
 
 [[package]]
 name = "langdex"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "serde",
  "vsh-serde-saphyr",
