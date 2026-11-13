@@ -65,6 +65,22 @@ depends = [
   "check:repo",
 ]
 
+# Rewrites src/table.rs from the pinned Linguist data and data/local.yml.
+[tasks.generate]
+description = "Regenerate src/table.rs from the pinned Linguist data and data/local.yml"
+run = "cargo test --test table"
+env = { LANGDEX_GENERATE = "1" }
+
+# Fetches the files at the commit in data/linguist/COMMIT, then checks their hashes.
+[tasks."linguist:fetch"]
+description = "Download Linguist's languages.yml and popular.yml at the pinned commit and check their hashes"
+dir = "{{config_root}}/data/linguist"
+run = [
+  "curl -fsSL -o languages.yml https://raw.githubusercontent.com/github-linguist/linguist/$(cat COMMIT)/lib/linguist/languages.yml",
+  "curl -fsSL -o popular.yml https://raw.githubusercontent.com/github-linguist/linguist/$(cat COMMIT)/lib/linguist/popular.yml",
+  "shasum -a 256 -c SHA256SUMS",
+]
+
 # mise-tasks/ holds this repository's task fragments and file tasks. An
 # includes list replaces the default task dirs, so mise-tasks comes first; add
 # pinned git:: catalogs after it.
