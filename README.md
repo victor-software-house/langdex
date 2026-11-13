@@ -2,9 +2,9 @@
 
 The languages of source files as one table: each language's name, aliases, file extensions, file names and interpreters.  
 langdex answers which language a file or a block of code holds, by any name the language goes by.  
-It is a Rust library, not a command.
+It is a Rust library with no command.
 
-## What it answers
+## Lookups
 
 The first release is planned to answer these lookups:
 
