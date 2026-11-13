@@ -282,7 +282,8 @@ pub fn by_interpreter(name: &str) -> Option<&'static Language> {
 /// a word) and the `NAME=value` arguments after it are skipped, and the script
 /// is the next word.
 /// A trailing `.` and digits are dropped, so `python3.11` reads `python3`.
-/// An `osascript` with a later `-l` gives no interpreter.
+/// An `osascript` with `-l` later in the line, as in `-l JavaScript` or
+/// `-lJavaScript`, gives no interpreter.
 ///
 /// Linguist also reads an `exec` line in the first five lines of an `sh`
 /// script. This function reads one line, so it does not.
@@ -306,7 +307,7 @@ pub fn interpreter(line: &str) -> Option<&str> {
         script = words.find(|word| !is_env_option(word) && !is_assignment(word))?;
     }
     let script = strip_version(script);
-    if script == "osascript" && words.any(|word| word == "-l") {
+    if script == "osascript" && words.any(|word| word.contains("-l")) {
         return None;
     }
     (!script.is_empty()).then_some(script)
@@ -376,18 +377,19 @@ fn languages(indexes: &'static [usize]) -> impl Iterator<Item = &'static Languag
 }
 
 /// Whether an `env` argument is an option, such as `-S` or
-/// `--ignore-environment`.
+/// `--ignore-environment`, as Linguist's `-[i0uCSv]*` and `--\S+` match one.
 fn is_env_option(word: &str) -> bool {
-    word.starts_with("--")
+    word.strip_prefix("--").is_some_and(|rest| !rest.is_empty())
         || word
             .strip_prefix('-')
             .is_some_and(|flags| flags.chars().all(|flag| "i0uCSv".contains(flag)))
 }
 
-/// Whether an `env` argument is a `NAME=value` assignment.
+/// Whether an `env` argument is a `NAME=value` assignment, with a name and a
+/// value, as Linguist's `\S+=\S+` matches one.
 fn is_assignment(word: &str) -> bool {
     word.split_once('=')
-        .is_some_and(|(name, _)| !name.is_empty())
+        .is_some_and(|(name, value)| !name.is_empty() && !value.is_empty())
 }
 
 /// Drops a trailing `.` and digits, so `python3.11` reads `python3`.

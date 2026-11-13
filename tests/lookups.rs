@@ -90,8 +90,15 @@ fn a_version_is_dropped() {
 }
 
 #[test]
+fn a_bare_double_dash_or_an_empty_value_ends_the_env_arguments() {
+    assert_eq!(interpreter("#!/usr/bin/env -- python"), Some("--"));
+    assert_eq!(interpreter("#!/usr/bin/env FOO= python"), Some("FOO="));
+}
+
+#[test]
 fn osascript_with_a_language_has_no_interpreter() {
     assert_eq!(interpreter("#!/usr/bin/osascript -l JavaScript"), None);
+    assert_eq!(interpreter("#!/usr/bin/osascript -lJavaScript"), None);
     assert_eq!(
         name(by_first_line("#!/usr/bin/osascript -l JavaScript")),
         None
