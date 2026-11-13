@@ -1,0 +1,12 @@
+# What langdex sets on top of Linguist's data.
+# `first` names the language that comes first for an extension where the shared
+# order (popular, then first extension, then name) picks a niche language.
+# Each entry gives its reason. The table test refuses an entry that is not needed.
+first:
+  .md: {language: Markdown, reason: GCC Machine Description is a niche language that sorts before Markdown by name.}
+  .yaml: {language: YAML, reason: MiniYAML is a niche language that lists the extension first and so wins over YAML.}
+  .txt: {language: Text, reason: Adblock Filter List is a niche language that sorts before Text by name.}
+  .cfg: {language: INI, reason: HAProxy lists the extension first and so wins over INI.}
+  .asc: {language: AsciiDoc, reason: AGS Script lists the extension first and so wins over AsciiDoc.}
+  .v: {language: Verilog, reason: Rocq Prover sorts before Verilog by name.}
+  .frag: {language: GLSL, reason: JavaScript is popular and so wins over GLSL.}
