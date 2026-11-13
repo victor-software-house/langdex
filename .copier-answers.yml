@@ -13,7 +13,9 @@ deny_bans: []
 deny_ignore: []
 deny_licenses: []
 feature_sets: []
-generated_paths: []
+generated_paths:
+- src/table.rs
+- data/linguist/**
 github_owner: victor-software-house
 layout: crate
 library: true
