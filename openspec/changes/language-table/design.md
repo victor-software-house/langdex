@@ -94,7 +94,8 @@ The first key with a language wins, file name before extensions.
 
 1. The line starts with `#!`; the path is the first run of non-space characters after it and any spaces.
 2. The script is the part after the path's last `/`.
-3. When the script is `env`, skip spaces, then any run of options (`-` with any of `i0uCSv`, or `--` and at least one more character) and of `NAME=value` arguments with a name and a value, each with the spaces after it; the script is the next word.
+3. When the script is `env`, skip spaces, then any run of options and of `NAME=value` arguments, each with the spaces after it; the script is the next word.  
+   An option is `-` with any of `i0uCSv`, or `--` and at least one more character, and an argument has a name and a value.
 4. A trailing `.` and digits are dropped, so `python3.11` reads `python3`.
 5. `osascript` with `-l` anywhere later in the line, as in `-lJavaScript`, gives no interpreter.
 
