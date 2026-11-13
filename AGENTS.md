@@ -1,10 +1,10 @@
 # langdex
 
 The language table for source files and blocks of code.  
-**A library, not a command.** Import as `langdex`.  
+**A library with no command.** Import it as `langdex`.  
 This file is the development contract.
 
-## What this crate owns
+## Scope
 
 - One entry per language: its name, aliases, fence names, file extensions, file names and interpreters.
 - The lookups: by name, by path, by the first line of a file, and by a fence info string.
@@ -18,7 +18,7 @@ A caller keeps its own rules, such as which languages it reads and what it does 
 2. **One namespace for names and aliases**, matched without regard to case, as Linguist matches them.
    A name that matches nothing falls back to the extensions, so `mts` names TypeScript.
 3. **An extension can belong to several languages.**
-   Each extension lists its languages in a fixed priority order, and a lookup returns the first unless the caller asks for all.
+   Each extension lists its languages in a fixed priority order, and a lookup returns the first, or every one through the lookup that lists them all.
 4. **The generated table is committed and never edited by hand.**
    One task regenerates it from the pinned Linguist commit, and a local entry lives in one file with the reason it exists.
 5. **MIT OR Apache-2.0**, so permissive crates can depend on langdex. No dependency may carry a copyleft license.

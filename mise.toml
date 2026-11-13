@@ -1,0 +1,81 @@
+# The latest stable mise is the floor; CI pins the same version.
+min_version = "2026.11.6"
+
+[settings]
+# Every tool, whether a config file, a task or the command line asks for it,
+# comes from the locks; one with no entry fails instead of being looked up.
+locked = true
+# mise loads git:: task includes, and runs [deps] providers, only in
+# experimental mode.
+experimental = true
+lockfile = true
+# The platforms CI and contributors use, from the platforms answer. Without
+# it, mise install fills every tool up to the platforms any tool already
+# records, and rewrites the locks.
+lockfile_platforms = ["linux-x64", "macos-arm64"]
+
+# Every tool this root declares must match mise.lock or mise.<env>.lock.
+[tool_config]
+locked = true
+
+# The toolchain lives here instead of in mise.dev.toml, because CI loads only
+# MISE_ENV=ci. The stable pin equals rust-toolchain.toml and rust-version.
+[tools]
+rust = [
+  # Pinned stable: build, lint, test.
+  { version = "1.100.0", profile = "minimal", components = "clippy", mr_boxington = true },
+  # rustfmt's unstable options, and rustdoc as docs.rs builds it.
+  { version = "nightly-2026-11-01", profile = "minimal", components = "rustfmt" },
+]
+mr-boxington = "1.30.0"
+"github:EmbarkStudios/cargo-deny" = "0.20.2"
+"github:bnjbvr/cargo-machete" = "0.9.2"
+"github:obi1kenobi/cargo-semver-checks" = "0.51.0"
+jq = "1.8.2"
+# The ver task (semver, check:versions) runs this verctl.
+"github:victor-software-house/verctl" = "0.8.0"
+
+# The shared Rust tasks read their toolchains from here and name none.
+[env]
+# format runs rustfmt on the nightly, for its unstable options.
+RUSTFMT_TOOLCHAIN = "+nightly-2026-11-01"
+# doc builds on the nightly, as docs.rs does.
+RUST_NIGHTLY = "nightly-2026-11-01"
+# cargo skips a crates.io release younger than this, unless Cargo.lock holds it.
+CARGO_REGISTRY_GLOBAL_MIN_PUBLISH_AGE = "3 days"
+# The crates.io logins whose crates `mise run update:own` takes past the cooldown.
+CARGO_TRUSTED_OWNERS = "any-victor"
+
+# The one gate, composed from the pieces this repository keeps. deny:advisories
+# and semver need the network, so they run as their own CI steps.
+[tasks.verify]
+description = "Every offline check this repository runs"
+depends = [
+  "check:toolchain",
+  "format",
+  "lint",
+  "check:features",
+  "test",
+  "test:doc",
+  "doc",
+  "check:docs",
+  "deny",
+  "deps",
+  "check:versions",
+  "check:repo",
+]
+
+# mise-tasks/ holds this repository's task fragments and file tasks. An
+# includes list replaces the default task dirs, so mise-tasks comes first; add
+# pinned git:: catalogs after it.
+[task_config]
+includes = [
+  # Pinned git:: catalogs follow mise-tasks.
+  "mise-tasks",
+  # The ver task that semver and check:versions run; it pins the verctl above.
+  "git::https://github.com/victor-software-house/verctl.git//tasks/ver?ref=v0.8.0",
+  # The shared Rust tasks, at actions main, 2026-11-13.
+  "git::https://github.com/victor-software-house/actions.git//tasks/rust.toml?ref=4f2318e8587711ead93246fc6a73174803264c3c",
+  # template:check, template:off, and template:on, at actions main, 2026-11-13.
+  "git::https://github.com/victor-software-house/actions.git//tasks/template.toml?ref=4f2318e8587711ead93246fc6a73174803264c3c",
+]
