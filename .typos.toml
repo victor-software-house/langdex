@@ -1,3 +1,6 @@
 # Spelling, checked by `mise run lint:typos`.
 [files]
 extend-exclude = ["*.lock", "src/table.rs", "data/linguist/**"]
+
+[default.extend-words]
+AGS = "AGS"
