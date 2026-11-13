@@ -6,7 +6,7 @@ It is a Rust library with no command.
 
 ## Lookups
 
-The first release is planned to answer these lookups:
+langdex answers these lookups:
 
 - `md`, `markdown` and `Markdown` name Markdown, since a name matches without regard to case.
 - A file `app.mjs` is JavaScript, and a file `app.mts` is TypeScript.
@@ -18,6 +18,14 @@ The first release is planned to answer these lookups:
 
 The table is generated from GitHub Linguist's `languages.yml` at a pinned commit, with a small file of local entries beside it.  
 The generated table is committed, so a build reads nothing from the network.
+
+## Update the Linguist data
+
+1. Change the commit in `data/linguist/COMMIT`.
+2. Run `mise run linguist:fetch`, which downloads `languages.yml` and `popular.yml` at that commit.
+   Its hash check fails until the next step.
+3. Rewrite `data/linguist/SHA256SUMS` with the hashes of the two new files.
+4. Run `mise run generate`, which rewrites `src/table.rs`, and commit the result.
 
 ## License
 
