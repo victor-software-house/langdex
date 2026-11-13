@@ -385,11 +385,12 @@ fn is_env_option(word: &str) -> bool {
             .is_some_and(|flags| flags.chars().all(|flag| "i0uCSv".contains(flag)))
 }
 
-/// Whether an `env` argument is a `NAME=value` assignment, with a name and a
-/// value, as Linguist's `\S+=\S+` matches one.
+/// Whether an `env` argument is a `NAME=value` assignment, as Linguist's
+/// `\S+=\S+` matches one: some `=` with a character before it and after it,
+/// so `=a=b` is one too.
 fn is_assignment(word: &str) -> bool {
-    word.split_once('=')
-        .is_some_and(|(name, value)| !name.is_empty() && !value.is_empty())
+    word.char_indices()
+        .any(|(index, c)| c == '=' && index > 0 && index + 1 < word.len())
 }
 
 /// Drops a trailing `.` and digits, so `python3.11` reads `python3`.

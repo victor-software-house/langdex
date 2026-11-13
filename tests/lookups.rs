@@ -93,6 +93,7 @@ fn a_version_is_dropped() {
 fn a_bare_double_dash_or_an_empty_value_ends_the_env_arguments() {
     assert_eq!(interpreter("#!/usr/bin/env -- python"), Some("--"));
     assert_eq!(interpreter("#!/usr/bin/env FOO= python"), Some("FOO="));
+    assert_eq!(interpreter("#!/usr/bin/env =a=b python"), Some("python"));
 }
 
 #[test]
