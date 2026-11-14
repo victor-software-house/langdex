@@ -33,7 +33,7 @@ mr-boxington = "1.30.0"
 "github:obi1kenobi/cargo-semver-checks" = "0.51.0"
 jq = "1.8.2"
 # The ver task (semver, check:versions) runs this verctl.
-"github:victor-software-house/verctl" = "0.8.0"
+"github:victor-software-house/verctl" = "0.8.6-rc.1"
 
 # The shared Rust tasks read their toolchains from here and name none.
 [env]
@@ -89,7 +89,7 @@ includes = [
   # Pinned git:: catalogs follow mise-tasks.
   "mise-tasks",
   # The ver task that semver and check:versions run; it pins the verctl above.
-  "git::https://github.com/victor-software-house/verctl.git//tasks/ver?ref=v0.8.0",
+  "git::https://github.com/victor-software-house/verctl.git//tasks/ver?ref=v0.8.6-rc.1",
   # The shared Rust tasks, at actions main, 2026-11-13.
   "git::https://github.com/victor-software-house/actions.git//tasks/rust.toml?ref=4f2318e8587711ead93246fc6a73174803264c3c",
   # template:check, template:off, and template:on, at actions main, 2026-11-13.
