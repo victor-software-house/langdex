@@ -20,7 +20,12 @@ workflow_policy:
   #   allowed: [corp-runner-large]
   # concurrency:
   #   endings: ["${{ github.ref }}"]
-  exceptions: []
+  exceptions:
+    - rule: pins
+      file: release.yml
+      reason: >-
+        verctl's release workflow is pinned to the 0.8.6-rc.1 commit to match
+        the verctl CLI in mise.toml; return to a release tag when 0.8.6 ships.
   # exceptions:
   #   - rule: permissions
   #     file: release.yml
