@@ -2,12 +2,12 @@
 
 ## 1. Data
 
-`data/linguist/` holds `languages.yml` and `popular.yml` from Linguist tag `v9.7.0` (commit `e0c78d62c42abae6122235d8e68a7aa43eef89da`), byte for byte, and `SHA256SUMS` with their hashes.  
-`LICENSE-LINGUIST` at the root holds Linguist's MIT license, so `cargo package` packs it beside the table derived from that data.  
+`data/linguist/` contains `languages.yml` and `popular.yml` from Linguist tag `v9.7.0` (commit `e0c78d62c42abae6122235d8e68a7aa43eef89da`), byte for byte, and `SHA256SUMS` with their hashes.  
+`LICENSE-LINGUIST` at the root contains Linguist's MIT license, so `cargo package` packs it beside the table derived from that data.  
 The mise task `linguist:fetch` downloads both files at the commit in `data/linguist/COMMIT` and checks them with `shasum -a 256 -c SHA256SUMS`.  
 Moving to a newer Linguist changes `COMMIT`, runs the fetch, rewrites `SHA256SUMS`, and regenerates the table, in one pull request.
 
-`data/local.yml` holds what langdex sets on top of Linguist, each entry with a `reason`:
+`data/local.yml` contains what langdex sets on top of Linguist, each entry with a `reason`:
 
 ```yaml
 first:
@@ -41,7 +41,7 @@ The generator test fails when an entry names a language that does not list the e
 
 `src/table.rs` is generated in one fixed layout, one entry per line, and starts with a comment that names the test that writes it.  
 `lib.rs` declares it as `#[rustfmt::skip] mod table;`, so rustfmt leaves the layout as the generator wrote it and the drift check compares plain text.  
-It holds `LANGUAGES`, a static array of `Language` in Linguist's order, and four indexes, each a static array sorted by its key bytes:
+It contains `LANGUAGES`, a static array of `Language` in Linguist's order, and four indexes, each a static array sorted by its key bytes:
 
 - `NAMES: [(&str, usize); _]`: every name, `fs_name` and alias, lowercased with `str::to_lowercase`, to its language;
 - `EXTENSIONS: [(&str, &[usize]); _]`: every extension, lowercased, with its leading dot, to its languages in order;
@@ -115,5 +115,5 @@ It also checks what the generator assumes: names, `fs_name`s and aliases are uni
 
 ## 7. Size
 
-The table holds 833 languages, 1,486 extensions, 419 file names and 168 interpreters.  
+The table has 833 languages, 1,486 extensions, 419 file names and 168 interpreters.  
 The tests record the size of a release build of a small binary that links langdex, against one that does not, in the pull request.
